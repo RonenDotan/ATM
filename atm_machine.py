@@ -22,7 +22,7 @@ class ATMMachine:
 
         def internal_withdrawl_calculation(amount, atm_content, output, total_coins):
             nonlocal solution_without_coins_limit
-            if len(withdrawl_options) > 10:
+            if len(withdrawl_options) >= 3:
                 return
             for curr_bill, bill_amount in atm_content.items():
                 if bill_amount == 0:
@@ -49,7 +49,7 @@ class ATMMachine:
         internal_withdrawl_calculation(amount=amount,atm_content=self.funds, output=[], total_coins=0)
         return self.prioritize_withdrawl_option(withdrawl_options = withdrawl_options, solution_without_coins_limit = solution_without_coins_limit)
     
-    def prioritize_withdrawl_option(self, withdrawl_options, solution_without_coins_limit ,priority_weight = {50: 500000, 20: 2000, 1: 0}):
+    def prioritize_withdrawl_option(self, withdrawl_options, solution_without_coins_limit ,priority_weight = {200: 200*200, 100: 100*100, 50: 50*50, 20: 20*20, 10: 10*10, 5:5*5, 1: 1, 0.1: 0.1, 0.01:0.01}):
         # We can use this to prioritzie the withdrawl options - for now, just summing up and selecting the first one
         result = []
         if len(withdrawl_options) == 0: # We couldn't find a way to fullfill the request - not enouth money in ATM
