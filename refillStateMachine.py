@@ -1,6 +1,6 @@
 from statemachine import StateMachine, State
 from atm_machine import atm
-
+from DB import state_machine_decorator, db
 
 class refillStateMachine(StateMachine):
     # States
@@ -16,23 +16,28 @@ class refillStateMachine(StateMachine):
     moneyRecievedToAtmFundsUpdated = moneyRecieved.to(atmFundsUpdated)
     atmFundsUpdatedToEnd = atmFundsUpdated.to(end)
 
-    money = {}
+    def __init__(self,money):
+        self.money = money
+        self.state_machine_log_id = db.log_state_machine(type=2, parameters={'money': money})
+        super(refillStateMachine, self).__init__()
 
     # Callbacks
-    def on_startToMoneyValidated(self, money):
+    @state_machine_decorator
+    def on_startToMoneyValidated(self):
         print('Validating Money')
-        self.money = money
-        return atm.validate_funds(money)
+        return atm.validate_funds(self.money)
 
-    
+    @state_machine_decorator
     def on_moneyValidatedToMoneyRecieved(self):
         print('Money Recieved From Cashier')
         return True
 
+    @state_machine_decorator
     def on_moneyRecievedToAtmFundsUpdated(self):
         atm.update_funds(self.money, "refill")
         return True
     
+    @state_machine_decorator
     def on_atmFundsUpdatedToEnd(self):
         print("Transaction Ended Successfully")
         return True

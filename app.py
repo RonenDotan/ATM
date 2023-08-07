@@ -46,22 +46,15 @@ def status_endpoint():
 
 @app.route('/atm/test_db', methods=['GET','POST'])
 def test_db_endpoint():
-    return test_db()
+    return test()
 
 
-def test_db():
-    print('Test DB')
-    import mysql.connector
-    mydb = mysql.connector.connect(
-                    host="sql7.freesqldatabase.com",
-                    user="sql7638042",
-                    database="sql7638042",
-                    password="JBe3ii6SdF"
-                    )
-    mycursor = mydb.cursor(dictionary=True)
-    mycursor.execute("SELECT * FROM fund_types")
-    myresult = mycursor.fetchall()
-    return myresult
+def test():
+    amount = 103
+    #result = withdraw(amount)
+
+    money = {"100" : 20, "10" : 5}
+    result = refill(money)
 
 
 

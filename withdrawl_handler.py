@@ -3,11 +3,11 @@ from withdrawlStateMachine import withdrawlStateMachine
 
 def withdraw(amount):
     try:
-        wsm = withdrawlStateMachine()
-        if (not wsm.startToAmountValidated(amount)):
+        wsm = withdrawlStateMachine(amount)
+        if (not wsm.startToAmountValidated()):
             pass
 
-        if (not wsm.amountValidatedToClientBalanceChecked(amount)):
+        if (not wsm.amountValidatedToClientBalanceChecked()):
             pass
 
         if (not wsm.clientBalanceCheckedToWithdrawalCalculated()):
@@ -30,9 +30,4 @@ def withdraw(amount):
             return result
     except Exception as e:
         print(e)
-        raise e
-    
-     
-
-#wsm.current_state = State('Error', id='error', value='error', final=True)
-    
+        raise e   

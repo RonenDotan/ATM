@@ -1,17 +1,6 @@
-MAX_COINS = 10
-FUND_TYPES = {200: 'BILL', 
-              100: 'BILL', 
-              50: 'BILL', 
-              20: 'BILL', 
-              10: 'COIN',
-              5: 'COIN',
-              1: 'COIN', 
-              0.1: 'COIN', 
-              0.01: 'COIN'}
-MAX_WITHDRAWAL_AMOUNT = 2000
 from collections import Counter
-from functools import reduce
-
+from DB import db
+from env_variables import CONSTANTS, FUND_TYPES, ATM_ID
 
 class UnprocessableEntity(Exception):
     message = "UnprocessableEntity"
@@ -23,8 +12,9 @@ class conflict(Exception):
 
 
 class ATMMachine:
-    def __init__(self, initial_funds):
-        self.funds = initial_funds
+    def __init__(self, atm_id):
+        self.atm_id = atm_id
+        self.funds = db.get_funds(self.atm_id)
 
     def calculate_withdrawl(self, amount):
         withdrawl_options = []
@@ -40,12 +30,12 @@ class ATMMachine:
 
                 if self.is_coin(curr_bill):
                     total_coins += 1
-                    if total_coins > MAX_COINS:
+                    if total_coins > CONSTANTS['MAX_COINS']:
                         if solution_without_coins_limit:
                             return
 
                 if curr_bill == amount:
-                    if total_coins > MAX_COINS:
+                    if total_coins > CONSTANTS['MAX_COINS']:
                         solution_without_coins_limit = True
                         return
                     else:
@@ -91,10 +81,11 @@ class ATMMachine:
         for bill, amount in update_bills.items():
             self.funds[float(bill)] = self.funds.setdefault(float(bill), 0) + sign *amount
 
+        db.update_funds(self.atm_id, self.funds)
         return True
     
     def validate_withdrawl(self, amount):
-        if amount > MAX_WITHDRAWAL_AMOUNT:
+        if amount > CONSTANTS['MAX_WITHDRAWAL_AMOUNT']:
             raise UnprocessableEntity
         else:
             return True
@@ -106,5 +97,7 @@ class ATMMachine:
             return True
         
 
-atm = ATMMachine(initial_funds = {200: 1, 100: 2, 20: 5, 10: 0, 5: 0, 1: 2, 0.1: 1, 0.01: 10})
+
+atm = ATMMachine(atm_id = ATM_ID)
+
 
