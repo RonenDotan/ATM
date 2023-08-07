@@ -37,10 +37,12 @@ calcualting the withdrawl.
 this problem might be more complex than it seems!
 
 For example, if we have these bills - without limitation:
-**bill: amount**
-50 : 100
-20 : 100
-10 : 100
+
+| bill      | amount |
+| ----------- | ----------- |
+| 50      | 100       |
+| 20   | 100        |
+| 10   | 100        |
 
 the limitation is that the amount of coins should be <= 10 - (not 50  - his is a constant and can change)
 the withdrawl amount is 62.
@@ -48,15 +50,17 @@ So using the basic algorithm we wold give 50, 1,1,1,1,1,1,1,1,1,1,1,1
 Now - the amount of coins is > 10! so basically we would finish here and say - we can't handle this with the basic algo.
 
 There is a better solution!
+
 we can give 20,20,20,1,1 - and we are good to go!
 
-so this means that just  removing by amount from top to buttom is not good enought.
+So this means that just  removing by amount from top to buttom is not good enought.
 I've created a recursion that will calculate several options to the withdrawal amount.This way we will not give an error when in fact we can give the money.
-the recursion is working as פונקציה יוצרת, so basically it calculate the next step (bill to give) and continues, untill finishes the amount. it will supply with maximum of 3 valid results. (cn be changed)
+the recursion is working as פונקציה יוצרת, so basically it calculate the next step (bill to give) and continues, untill finishes the amount. it will supply with maximum of 3 valid results. (can be changed)
 
 These results are than prioritize using: prioritize_withdrawl_option, which can accept a dictionary of diffrent weights for each bill and change the withdrawl option.
+
 The default weight:
-{200: 200x200, 100: 100x100, 50: 50x50, 20: 20x20, 10: 10x10, 5:5x5, 1: 1, 0.1: 0.1, 0.01:0.01}
+```{200: 200x200, 100: 100x100, 50: 50x50, 20: 20x20, 10: 10x10, 5:5x5, 1: 1, 0.1: 0.1, 0.01:0.01}```
 Will prefer to give big bills first, coins at the end, but will always try to giv result if possible.
 
 notice that MAX_COINS, MAX_WITHDRAWAL_AMOUNT are constant.
@@ -64,14 +68,17 @@ notice that MAX_COINS, MAX_WITHDRAWAL_AMOUNT are constant.
 Regarding the DB:
 to import - look at atm.sql in this repository.
 
-##tables:
+## tables:
 
 **atm_funds** - the current funds for all the atms, seperated by atm_id. the funds are in a json text.
+
 **constants** - to be used in the system, for example MAX_WITHDRAWAL_AMOUNT, MAX_COINS
+
 **fund_types** - all posible funds and clasification to type - bill/ coin
+
 **state_machine_flows** - a log of all the actions done in the system and the transitions.
 
-####state_machine_flows:
+### state_machine_flows:
 each transaction (withdrawal/ refill) is registered, and then on each transition (clientBalanceChecked, withdrawal calculated.... ) the DB is updated so we will know exactly what happened and nothing will get lost.
 I am logging the source state and the transition, and time. FFU - to build a script that an restore the action from the state machine in the middle.
 
