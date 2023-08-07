@@ -3,11 +3,15 @@
 
 URL:https://frozen-fjord-21742-ed9360497415.herokuapp.com/ 
 
-###DB: 
-    Host: sql7.freesqldatabase.com 
+## DB: 
+    Host: sql7.freesqldatabase.com
+
     Database name: sql7638042 
+
     Database user: sql7638042 
+
     Database password: JBe3ii6SdF 
+    
     Port number: 3306 
 
 app.py is the router of the request.
