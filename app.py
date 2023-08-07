@@ -51,11 +51,9 @@ def test_db_endpoint():
 
 def test():
     amount = 103
-    #result = withdraw(amount)
-
     money = {"100" : 20, "10" : 5}
     result = refill(money)
-
+    return jsonify(success=True)
 
 
 if __name__ == '__main__':
