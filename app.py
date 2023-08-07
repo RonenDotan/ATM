@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Hello World!'
+    return 'ATM'
 
 @app.route('/atm/withdrawl', methods=['POST'])
 def withdrawl_endpoint():
@@ -43,6 +43,26 @@ def refill_endpoint():
 def status_endpoint():
     from atm_machine import atm
     return jsonify(atm.funds)
+
+@app.route('/atm/test_db', methods=['GET','POST'])
+def test_db_endpoint():
+    return test_db()
+
+
+def test_db():
+    print('Test DB')
+    import mysql.connector
+    mydb = mysql.connector.connect(
+                    host="sql7.freesqldatabase.com",
+                    user="sql7638042",
+                    database="sql7638042",
+                    password="JBe3ii6SdF"
+                    )
+    mycursor = mydb.cursor(dictionary=True)
+    mycursor.execute("SELECT * FROM fund_types")
+    myresult = mycursor.fetchall()
+    return myresult
+
 
 
 if __name__ == '__main__':
