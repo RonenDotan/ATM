@@ -73,4 +73,4 @@ class withdrawlStateMachine(StateMachine):
     def on_clientBalanceUpdatedToEnd(self):
         print('Updating Client Balance')
         print('Ending')
-        return self.withdrawal_bills
+        return atm.clean_result(self.withdrawal_bills)

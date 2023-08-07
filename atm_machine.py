@@ -96,6 +96,19 @@ class ATMMachine:
         else:
             return True
         
+    def clean_result(self, withdrawl_bils):
+        def try_round_bill(bill):
+            if bill == int(bill):
+                return int(bill)
+            else:
+                return bill
+
+        result = {}
+        for bill, amount in withdrawl_bils.items():
+            round_bill = try_round_bill(bill)
+            result.setdefault(FUND_TYPES[bill],{})
+            result[FUND_TYPES[bill]].setdefault(round_bill, amount)
+        return {"result": result}
 
 
 atm = ATMMachine(atm_id = ATM_ID)

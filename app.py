@@ -31,12 +31,18 @@ def withdrawl_endpoint():
 
 @app.route('/atm/refill', methods=['POST'])
 def refill_endpoint():
-    parser = reqparse.RequestParser()
-    parser.add_argument('money', type=dict, help='Amount to be refilled')
-    args = parser.parse_args()
-    money = args['money']
-    result = refill(money)
-    return jsonify(success=True)
+    try:
+        parser = reqparse.RequestParser()
+        parser.add_argument('money', type=dict, help='Amount to be refilled')
+        args = parser.parse_args()
+        money = args['money']
+        result = refill(money)
+        return jsonify(success=True)
+    except Exception as e:
+        return jsonify(
+                data=e.message,
+                status=e.status_code
+            )
 
 
 @app.route('/atm/status', methods=['GET','POST'])
@@ -51,6 +57,8 @@ def test_db_endpoint():
 
 def test():
     amount = 103
+    return withdraw(amount)
+
     money = {"100" : 20, "10" : 5}
     result = refill(money)
     return jsonify(success=True)
