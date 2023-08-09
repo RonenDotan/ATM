@@ -18,12 +18,12 @@ def withdrawl_endpoint():
         args = parser.parse_args()
         amount = round(args['amount'], 2)
         result = withdraw(amount)
-        return result
+        return result, 200
     except Exception as e:
         return jsonify(
                 data=e.message,
                 status=e.status_code
-            )
+            ), e.status_code
 
     
     
@@ -37,12 +37,12 @@ def refill_endpoint():
         args = parser.parse_args()
         money = args['money']
         result = refill(money)
-        return jsonify(success=True)
+        return jsonify(success=True), 200
     except Exception as e:
         return jsonify(
                 data=e.message,
                 status=e.status_code
-            )
+            ), e.status_code
 
 
 @app.route('/atm/status', methods=['GET','POST'])
@@ -56,13 +56,13 @@ def test_db_endpoint():
 
 
 def test():
-    amount = 103
+    amount = 50
     return withdraw(amount)
 
     money = {"100" : 20, "10" : 5}
     result = refill(money)
     return jsonify(success=True)
 
-
+# test()
 if __name__ == '__main__':
     app.run(debug=True)

@@ -14,5 +14,6 @@ def refill(money):
     if (not rsm.atmFundsUpdatedToEnd()):
         return
     
-
+    
     print('Finished Transaction')
+    
