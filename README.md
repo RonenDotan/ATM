@@ -1,7 +1,27 @@
 # Ronen Dotan - ATM Assignment
 
 
-URL:https://frozen-fjord-21742-ed9360497415.herokuapp.com/ 
+URL: 
+http://34.27.29.159/
+
+refill example
+```    
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -d \
+'{"money": {"100" : 3}}' \
+ 'http://34.27.29.159/atm/refill'
+```
+
+withdrawl example:
+```
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -d \
+'{"amount":100}' \
+ 'http://34.27.29.159/atm/withdrawl'
+```
+
 
 ## DB: 
     Host: sql7.freesqldatabase.com
